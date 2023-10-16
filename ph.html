@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>WATER QUALITY MONITORING</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #3498db;
+            text-align: center;
+            padding: 20px;
+        }
+        h1 {
+            color: white;
+        }
+        table {
+            width: 80%; /* Set the table width */
+            margin: 20px auto; /* Center the table on the page */
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #333; /* Add borders to table cells */
+            padding: 10px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h2>WATER QUALITY MONITORING PH&TDS</h2>
+    </header>
+    <main>
+        <table>
+            <tr>
+                <th>Parameter</th>
+                <th>Value</th>
+            </tr>
+            <tr>
+                <td>PH Value:</td>
+                <td>{{ ph_value }}</td>
+            </tr>
+            <tr>
+                <td>TDS Value:</td>
+                <td>{{ tds }} PPM</td>
+            </tr>
+        </table>
+    </main>
+</body>
+</html>
