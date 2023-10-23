@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Light Control</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        h1 {
+            color: #3498db;
+        }
+        form {
+            margin: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input[type="time"] {
+            padding: 5px;
+            width: 200px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        input[type="submit"] {
+            background-color: #3498db;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>Light Control</h1>
+    <form action="/set_times" method="post">
+        <label for="time_on">Turn On Time:</label>
+        <input type="time" name="time_on" value="{{ time_on }}" required>
+        <br>
+        <label for="time_off">Turn Off Time:</label>
+        <input type="time" name="time_off" value="{{ time_off }}" required>
+        <br>
+        <input type="submit" value="Set Times">
+    </form>
+</body>
+</html>
