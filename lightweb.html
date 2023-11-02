@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>4-Channel Relay Control</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f0f0f0;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        .relay-group {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .relay {
+            padding: 10px;
+            background-color: #fff;
+            border: 2px solid #ccc;
+            margin: 10px;
+            border-radius: 5px;
+            box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-on, .btn-off {
+            padding: 10px 40px;
+            font-size: 16px;
+            margin: 5px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .btn-on {
+            background-color: #5cb85c;
+            color: #fff;
+        }
+
+        .btn-off {
+            background-color: #d9534f;
+            color: #fff;
+        }
+
+        .btn-on:hover {
+            background-color: #449d44;
+        }
+
+        .btn-off:hover {
+            background-color: #c9302c;
+        }
+
+        .relay-status {
+            font-size: 18px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>4-Channel Relay Control</h1>
+    <div class="relay-group">
+        <div class="relay">
+            Relay 1:
+            <div class="btn-container">
+                <button class="btn-on" id="relay1-button" onclick="controlRelay(1, 'on')">ON</button>
+                <button class="btn-off" id="relay1-button" onclick="controlRelay(1, 'off')">OFF</button>
+            </div>
+            <div id="relay1-status" class="relay-status"></div>
+        </div>
+
+        <div class="relay">
+            Relay 2:
+            <div class="btn-container">
+                <button class="btn-on" id="relay2-button" onclick="controlRelay(2, 'on')">ON</button>
+                <button class="btn-off" id="relay2-button" onclick="controlRelay(2, 'off')">OFF</button>
+            </div>
+            <div id="relay2-status" class="relay-status"></div>
+        </div>
+
+        <div class="relay">
+            Relay 3:
+            <div class="btn-container">
+                <button class="btn-on" id="relay3-button" onclick="controlRelay(3, 'on')">ON</button>
+                <button class="btn-off" id="relay3-button" onclick="controlRelay(3, 'off')">OFF</button>
+            </div>
+            <div id="relay3-status" class="relay-status"></div>
+        </div>
+
+        <div class="relay">
+            Relay 4:
+            <div class="btn-container">
+                <button class="btn-on" id="relay4-button" onclick="controlRelay(4, 'on')">ON</button>
+                <button class="btn-off" id="relay4-button" onclick="controlRelay(4, 'off')">OFF</button>
+            </div>
+            <div id="relay4-status" class="relay-status"></div>
+        </div>
+    </div>
+</body>
+<script>
+    function controlRelay(relayNum, state) {
+        fetch('/control_relay', {
+            method: 'POST',
+            body: new URLSearchParams({ 'relay_num': relayNum, 'relay_state': state }),
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+        }).then(response => response.json()).then(data => {
+            if (data.success) {
+                const button = document.getElementById('relay' + relayNum + '-button');
+                button.textContent = state.toUpperCase();
+                document.getElementById('relay' + relayNum + '-status').textContent = 'Relay ' + relayNum + ' is ' + state.toUpperCase();
+            } else {
+                alert('Error: ' + data.message);
+            }
+        });
+    }
+
+    function updateRelayStatus() {
+        // Fetch the relay status from your server and update the page
+        fetch('/get_relay_status')
+            .then(response => response.json())
+            .then(data => {
+                for (let i = 1; i <= 4; i++) {
+                    const status = data['relay' + i];
+                    const button = document.getElementById('relay' + i + '-button');
+                    button.textContent = status.toUpperCase();
+                    const statusElement = document.getElementById('relay' + i + '-status');
+                    statusElement.textContent = 'Relay ' + i + ' is ' + status.toUpperCase();
+                }
+            });
+    }
+
+    // Call the function immediately to load the status on page load
+    updateRelayStatus();
+    // Update the relay status every 5 seconds (you can adjust the interval)
+    setInterval(updateRelayStatus, 5000);
+</script>
+</html>
